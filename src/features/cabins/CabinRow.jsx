@@ -1,5 +1,8 @@
 import styled from 'styled-components';
+import toast from 'react-hot-toast';
 import { formatCurrency } from '../../utils/helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteCabin } from '../../services/apiCabins';
 
 const TableRow = styled.div`
   display: grid;
@@ -41,7 +44,30 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const { image, name, maxCapacity, regularPrice, discount } = cabin;
+  const {
+    id: cabinId,
+    image,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+  } = cabin;
+
+  const queryClient = useQueryClient();
+
+  const { isLoading: isDeleting, mutate } = useMutation({
+    // mutationFn: (id) => deleteCabin(id),
+    mutationFn: deleteCabin,
+    onSuccess: () => {
+      toast.success('Cabin successfully deleted');
+      queryClient.invalidateQueries({
+        queryKey: ['cabins'],
+      });
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
 
   return (
     <TableRow role='row'>
@@ -50,9 +76,23 @@ function CabinRow({ cabin }) {
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{formatCurrency(regularPrice)}</Price>
       <Discount>{formatCurrency(discount)}</Discount>
-      <button>Delete</button>
+      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+        Delete
+      </button>
     </TableRow>
   );
 }
 
 export default CabinRow;
+
+/* and we also use react query to actually make the delete button work and we do that by doing mutations */
+
+/* now as we delete we see that the ui don't even update and to make that happen we need to invalidate the cache as soon as the mutation is done so for that we can specify the onSuccess callback which accepts a function so in it we can tell react query what to do as soon as the mutation was successful so we basically want to refetch the data */
+
+/* now the way it works in react query is by invalidating the cache because the data then becomes invalid so react query fetches the data again and to do that we need to get the queryClient and then call invalidateQueries function in there so to get the access to our queryClient instance in this component we have a special hook called useQueryClient */
+
+/* in our invalidateQueries function we have to tell it which exact query meaning which exact data should be invalidated so we specify exactly the same queryKey that brings us the cabins data */
+
+/* and this is one of the reasons why it is so important that each query is uniquely identified because then we can now invalidate this query so that it will fetch again */
+
+/* and besides the onSuccess handler we also have the onError handler so it receives the error that was actually thrown inside the deleteCabin function as that is the function we pass in the mutation function */

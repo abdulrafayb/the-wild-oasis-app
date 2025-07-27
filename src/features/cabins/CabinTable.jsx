@@ -58,3 +58,5 @@ function CabinTable() {
 }
 
 export default CabinTable;
+
+/* instead of manually fetching the data in a useEffect we will now use react query */
