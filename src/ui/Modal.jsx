@@ -57,7 +57,6 @@ const ModalContext = createContext();
 
 function Modal({ children }) {
   const [openName, setOpenName] = useState('');
-
   const close = () => setOpenName('');
   const open = setOpenName;
 
@@ -70,6 +69,7 @@ function Modal({ children }) {
 
 function Open({ children, opens: opensWindowName }) {
   const { open } = useContext(ModalContext);
+
   return cloneElement(children, { onClick: () => open(opensWindowName) });
 }
 
