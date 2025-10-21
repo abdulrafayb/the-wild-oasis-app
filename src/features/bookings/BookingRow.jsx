@@ -8,30 +8,29 @@ import {
   HiArrowDownOnSquare,
 } from 'react-icons/hi2';
 
-import Tag from 'ui/Tag';
-import Menus from 'ui/Menus';
-import Modal from 'ui/Modal';
-import ConfirmDelete from 'ui/ConfirmDelete';
-import Table from 'ui/Table';
+import Tag from '../../ui/Tag';
+import Menus from '../../ui/Menus';
+import Modal from '../../ui/Modal';
+import ConfirmDelete from '../../ui/ConfirmDelete';
+import Table from '../../ui/Table';
 
-import { useDeleteBooking } from 'features/bookings/useDeleteBooking';
-import { formatCurrency } from 'utils/helpers';
-import { formatDistanceFromNow } from 'utils/helpers';
-import { useCheckout } from 'features/check-in-out/useCheckout';
+// import { useDeleteBooking } from 'features/bookings/useDeleteBooking';
+import { formatCurrency } from '../../utils/helpers';
+import { formatDistanceFromNow } from '../../utils/helpers';
+// import { useCheckout } from 'features/check-in-out/useCheckout';
 import { format, isToday } from 'date-fns';
 
-// v1
-// const TableRow = styled.div`
-//   display: grid;
-//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-//   column-gap: 2.4rem;
-//   align-items: center;
-//   padding: 1.4rem 2.4rem;
+/* const TableRow = styled.div`
+  display: grid;
+  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  column-gap: 2.4rem;
+  align-items: center;
+  padding: 1.4rem 2.4rem;
 
-//   &:not(:last-child) {
-//     border-bottom: 1px solid var(--color-grey-100);
-//   }
-// `;
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+`; */
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -63,19 +62,17 @@ const Amount = styled.div`
 function BookingRow({
   booking: {
     id: bookingId,
-    created_at,
     startDate,
     endDate,
     numNights,
-    numGuests,
     totalPrice,
     status,
     guests: { fullName: guestName, email },
     cabins: { name: cabinName },
   },
 }) {
-  const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
-  const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
+  // const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
+  // const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
 
   const navigate = useNavigate();
 
@@ -90,12 +87,10 @@ function BookingRow({
   return (
     <Table.Row role='row'>
       <Cabin>{cabinName}</Cabin>
-
       <Stacked>
         <span>{guestName}</span>
         <span>{email}</span>
       </Stacked>
-
       <Stacked>
         <span>
           {isToday(new Date(startDate))
@@ -108,13 +103,10 @@ function BookingRow({
           {format(new Date(endDate), 'MMM dd yyyy')}
         </span>
       </Stacked>
-
       <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
-
       <Amount>{formatCurrency(totalPrice)}</Amount>
-
       {/* VIDEO we could export this into own component... */}
-      <Modal>
+      {/* <Modal>
         <Menus.Menu>
           <Menus.Toggle id={bookingId} />
           <Menus.List id={bookingId}>
@@ -136,8 +128,8 @@ function BookingRow({
 
             {status === 'checked-in' && (
               <Menus.Button
-                onClick={() => checkout(bookingId)}
-                disabled={isCheckingOut}
+                // onClick={() => checkout(bookingId)}
+                // disabled={isCheckingOut}
                 icon={<HiArrowUpOnSquare />}
               >
                 Check out
@@ -146,25 +138,22 @@ function BookingRow({
 
             <Menus.Button icon={<HiPencil />}>Edit booking</Menus.Button>
             {/* <Menus.Button>Delete</Menus.Button> */}
-
-            {/* Now it gets a bit confusing... */}
-            <Modal.Toggle opens='delete'>
+      {/* Now it gets a bit confusing... */}
+      {/* <Modal.Toggle opens='delete'>
               <Menus.Button icon={<HiTrash />}>Delete booking</Menus.Button>
             </Modal.Toggle>
           </Menus.List>
-        </Menus.Menu>
-
-        {/* This needs to be OUTSIDE of the menu, which in no problem. The compound component gives us this flexibility */}
-        <Modal.Window name='delete'>
+        </Menus.Menu> */}
+      {/* This needs to be OUTSIDE of the menu, which in no problem. The compound component gives us this flexibility */}
+      {/* <Modal.Window name='delete'>
           <ConfirmDelete
             resource='booking'
             // These options will be passed wherever the function gets called, and they determine what happens next
-            onConfirm={(options) => deleteBooking(bookingId, options)}
-            disabled={isDeleting}
+            // onConfirm={(options) => deleteBooking(bookingId, options)}
+            // disabled={isDeleting}
           />
-        </Modal.Window>
-      </Modal>
-
+        </Modal.Window> */}
+      {/* </Modal> */}
       {/* <div>
         <ButtonWithConfirm
           title='Delete booking'
