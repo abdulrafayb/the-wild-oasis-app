@@ -1,11 +1,18 @@
 import { getToday } from '../utils/helpers';
 import supabase from './supabase';
 
-export async function getBookings() {
-  const { data, error } = await supabase
+export async function getBookings({ filter, sortBy }) {
+  let query = supabase
     .from('bookings')
-    // .select('*, cabins(*), guests(*)');
     .select('*, cabins(name), guests(fullName, email)');
+
+  // filter
+  if (filter !== null)
+    query = query[filter.method || 'eq'](filter.field, filter.value);
+
+  // sort
+
+  const { data, error } = await query;
 
   if (error) {
     console.error(error);
@@ -109,4 +116,6 @@ export async function deleteBooking(id) {
   return data;
 }
 
-/* so instead of grabbing everything from cabins and guests table in our getBookings api we can only take the fields that we actually need and to do that instead of writing star we just have to write the field/column names and by doing this we reduce the amount of unnecessary data that needs to be downloaded */
+/* so instead of grabbing everything from cabins and guests table in our getBookings api like below
+  "select('*, cabins(*), guests(*)')"
+we can only take the fields that we actually need and to do that instead of writing star we just have to write the field/column names and by doing this we reduce the amount of unnecessary data that needs to be downloaded */
