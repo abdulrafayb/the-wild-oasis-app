@@ -1,23 +1,23 @@
 import styled from 'styled-components';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 
-import { box } from 'styles/styles';
-import { formatDistanceFromNow } from 'utils/helpers';
-import { isToday } from 'date-fns/esm';
-import { formatCurrency } from 'utils/helpers';
+// import { box } from 'styles/styles';
+// import { formatDistanceFromNow } from '../../utils/helpers';
+// import { isToday } from 'date-fns/esm';
+import { formatCurrency } from '../../utils/helpers';
 import {
   HiOutlineChatBubbleBottomCenterText,
   HiOutlineCheckCircle,
   HiOutlineCurrencyDollar,
   HiOutlineHomeModern,
 } from 'react-icons/hi2';
-import DataItem from 'ui/DataItem';
-import { Flag } from 'ui/Flag';
+import DataItem from '../../ui/DataItem';
+import { Flag } from '../../ui/Flag';
 
-const StyledBookingDataBox = styled.section`
-  ${box} /* padding: 3.2rem 4rem; */
-  overflow: hidden;
-`;
+// const StyledBookingDataBox = styled.section`
+//   ${box} /* padding: 3.2rem 4rem; */
+//   overflow: hidden;
+// `;
 
 const Header = styled.header`
   background-color: var(--color-brand-500);
@@ -119,7 +119,7 @@ function BookingDataBox({ booking }) {
   } = booking;
 
   return (
-    <StyledBookingDataBox>
+    <div>
       <Header>
         <div>
           <HiOutlineHomeModern />
@@ -129,11 +129,11 @@ function BookingDataBox({ booking }) {
         </div>
 
         <p>
-          {format(new Date(startDate), 'EEE, MMM dd yyyy')} (
+          {/* {format(new Date(startDate), 'EEE, MMM dd yyyy')} (
           {isToday(new Date(startDate))
             ? 'Today'
             : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), 'EEE, MMM dd yyyy')}
+          ) &mdash; {format(new Date(endDate), 'EEE, MMM dd yyyy')} */}
         </p>
       </Header>
 
@@ -177,9 +177,9 @@ function BookingDataBox({ booking }) {
       </Section>
 
       <Footer>
-        <p>Booked {format(new Date(created_at), 'EEE, MMM dd yyyy, p')}</p>
+        {/* <p>Booked {format(new Date(created_at), 'EEE, MMM dd yyyy, p')}</p> */}
       </Footer>
-    </StyledBookingDataBox>
+    </div>
   );
 }
 

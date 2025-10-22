@@ -1,0 +1,21 @@
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { getBooking } from '../../services/apiBookings';
+
+export function useBooking() {
+  const { bookingId } = useParams();
+
+  const {
+    isLoading,
+    data: booking,
+    error,
+  } = useQuery({
+    queryKey: ['booking'],
+    queryFn: () => getBooking(bookingId),
+    retry: false,
+  });
+
+  return { isLoading, booking, error };
+}
+
+/* so by default react query will try to fetch data three times in case that it fails in the beginning so we set the retry to false meaning it will fetch the data only once */

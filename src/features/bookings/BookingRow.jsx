@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import {
   HiPencil,
   HiTrash,
@@ -7,6 +6,7 @@ import {
   HiArrowUpOnSquare,
   HiArrowDownOnSquare,
 } from 'react-icons/hi2';
+import { format, isToday } from 'date-fns';
 
 import Tag from '../../ui/Tag';
 import Menus from '../../ui/Menus';
@@ -14,11 +14,11 @@ import Modal from '../../ui/Modal';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Table from '../../ui/Table';
 
-// import { useDeleteBooking } from 'features/bookings/useDeleteBooking';
+import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '../../utils/helpers';
 import { formatDistanceFromNow } from '../../utils/helpers';
+// import { useDeleteBooking } from 'features/bookings/useDeleteBooking';
 // import { useCheckout } from 'features/check-in-out/useCheckout';
-import { format, isToday } from 'date-fns';
 
 /* const TableRow = styled.div`
   display: grid;
@@ -76,8 +76,6 @@ function BookingRow({
 
   const navigate = useNavigate();
 
-  // We will not allow editing at this point, as it's too complex for bookings... People just need to delete a booking and create a new one
-
   const statusToTagName = {
     unconfirmed: 'blue',
     'checked-in': 'green',
@@ -103,9 +101,23 @@ function BookingRow({
           {format(new Date(endDate), 'MMM dd yyyy')}
         </span>
       </Stacked>
+
       <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
+
       <Amount>{formatCurrency(totalPrice)}</Amount>
-      {/* VIDEO we could export this into own component... */}
+
+      <Menus.Menu>
+        <Menus.Toggle id={bookingId} />
+        <Menus.List id={bookingId}>
+          <Menus.Button
+            icon={<HiEye />}
+            onClick={() => navigate(`/bookings/${bookingId}`)}
+          >
+            See details
+          </Menus.Button>
+        </Menus.List>
+      </Menus.Menu>
+
       {/* <Modal>
         <Menus.Menu>
           <Menus.Toggle id={bookingId} />
@@ -172,3 +184,5 @@ function BookingRow({
 }
 
 export default BookingRow;
+
+// We will not allow editing at this point, as it's too complex for bookings... People just need to delete a booking and create a new one

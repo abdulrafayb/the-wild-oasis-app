@@ -1,22 +1,22 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-import Spinner from 'ui/Spinner';
+import Spinner from '../../ui/Spinner';
 import BookingDataBox from './BookingDataBox';
-import Row from 'ui/Row';
-import Heading from 'ui/Heading';
-import Tag from 'ui/Tag';
-import ButtonGroup from 'ui/ButtonGroup';
-import Button from 'ui/Button';
-import Modal from 'ui/Modal';
-import ConfirmDelete from 'ui/ConfirmDelete';
+import Row from '../../ui/Row';
+import Heading from '../../ui/Heading';
+import Tag from '../../ui/Tag';
+import ButtonGroup from '../../ui/ButtonGroup';
+import Button from '../../ui/Button';
+import Modal from '../../ui/Modal';
+import ConfirmDelete from '../../ui/ConfirmDelete';
+import ButtonText from '../../ui/ButtonText';
+import Empty from '../../ui/Empty';
 
-import { useBooking } from 'features/bookings/useBooking';
-import { useDeleteBooking } from './useDeleteBooking';
-import { useMoveBack } from 'hooks/useMoveBack';
-import { useCheckout } from 'features/check-in-out/useCheckout';
-import ButtonText from 'ui/ButtonText';
-import Empty from 'ui/Empty';
+import { useBooking } from './useBooking';
+import { useMoveBack } from '../../hooks/useMoveBack';
+// import { useDeleteBooking } from './useDeleteBooking';
+// import { useCheckout } from 'features/check-in-out/useCheckout';
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -25,15 +25,16 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const { booking } = useBooking();
-  const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
-  const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
+  const { booking, isLoading } = useBooking();
+
+  // const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
+  // const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
 
   const moveBack = useMoveBack();
   const navigate = useNavigate();
 
-  // if (isLoading) return <Spinner />;
-  // if (!booking) return <Empty resource='booking' />;
+  if (isLoading) return <Spinner />;
+  if (!booking) return <Empty resourceName='booking' />;
 
   const statusToTagName = {
     unconfirmed: 'blue',
@@ -41,7 +42,7 @@ function BookingDetail() {
     'checked-out': 'silver',
   };
 
-  const { id: bookingId, status } = booking;
+  const { status, id: bookingId } = booking;
 
   // We return a fragment so that these elements fit into the page's layout
   return (
@@ -54,22 +55,22 @@ function BookingDetail() {
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <BookingDataBox booking={booking} />
+      {/* <BookingDataBox booking={booking} /> */}
 
       <ButtonGroup>
-        {status === 'unconfirmed' && (
+        {/* {status === 'unconfirmed' && (
           <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
             Check in
           </Button>
-        )}
+        )} */}
 
-        {status === 'checked-in' && (
+        {/* {status === 'checked-in' && (
           <Button onClick={() => checkout(bookingId)} disabled={isCheckingOut}>
             Check out
           </Button>
-        )}
+        )} */}
 
-        <Modal>
+        {/* <Modal>
           <Modal.Toggle opens='delete'>
             <Button variation='danger'>Delete booking</Button>
           </Modal.Toggle>
@@ -77,11 +78,11 @@ function BookingDetail() {
             <ConfirmDelete
               resource='booking'
               // These options will be passed wherever the function gets called, and they determine what happens next
-              onConfirm={(options) => deleteBooking(bookingId, options)}
-              disabled={isDeleting}
+              // onConfirm={(options) => deleteBooking(bookingId, options)}
+              // disabled={isDeleting}
             />
           </Modal.Window>
-        </Modal>
+        </Modal> */}
 
         <Button variation='secondary' onClick={moveBack}>
           Back
