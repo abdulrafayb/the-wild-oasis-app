@@ -2,14 +2,10 @@
 import BookingRow from './BookingRow';
 import Spinner from '../../ui/Spinner';
 import Table from '../../ui/Table';
-// import { useBookings } from 'features/bookings/useBookings';
 import Menus from '../../ui/Menus';
-// import Pagination from '../../ui/Pagination';
+import Pagination from '../../ui/Pagination';
 import Empty from '../../ui/Empty';
 import { useBookings } from './useBookings';
-
-// v2
-// Right now this is not really reusable... But we will want to use a similar table for guests as well, but with different columns. ALSO, right now we are defining these columns in BOTH the TableHeader and the BookingRow, which is not good at all. Instead, it would be much better to simply pass the columns into the Table, and the table would give access to the columns to both the header and row. So how can we do that? Well we can again use a compound component! We don't HAVE to do it like this, there's a million ways to implement a table, also without CSS Grid, but this is what I chose
 
 /* const TableHeader = styled.header`
   display: grid;
@@ -34,9 +30,6 @@ function BookingTable() {
   if (isLoading) return <Spinner />;
   if (!bookings.length) return <Empty resourceName={'bookings'} />;
 
-  // VIDEO stupid JS bug, just an example of course
-  // null.toUpperCase();
-
   return (
     <Menus>
       <Table columns='0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem'>
@@ -49,11 +42,6 @@ function BookingTable() {
           <div></div>
         </Table.Header>
 
-        {/* {bookings.map((booking) => (
-            <BookingRow key={booking.id} booking={booking} />
-          ))} */}
-
-        {/* Render props! */}
         <Table.Body
           data={bookings}
           render={(booking) => (
@@ -61,15 +49,15 @@ function BookingTable() {
           )}
         />
 
-        {/* <Table.Footer>
-          <Pagination count={count} />
-        </Table.Footer> */}
+        <Table.Footer>
+          <Pagination count={15} />
+        </Table.Footer>
       </Table>
     </Menus>
   );
 }
 
+export default BookingTable;
+
 // We could create yet another layer of abstraction on top of this. We could call this component just <Results>, like: Results({data, count, isLoading, columns, rowComponent}). Then <BookingTable> and ALL other tables would simply call that.
 // BUT, creating more abstractions also has a cost! More things to remember, more complex codebase to understand. Sometimes it's okay to just copy and paste instead of creating abstractions
-
-export default BookingTable;
