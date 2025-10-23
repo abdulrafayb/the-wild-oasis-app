@@ -1,27 +1,28 @@
 import styled from 'styled-components';
-// import { format } from 'date-fns';
-
-// import { box } from 'styles/styles';
-// import { formatDistanceFromNow } from '../../utils/helpers';
-// import { isToday } from 'date-fns/esm';
-import { formatCurrency } from '../../utils/helpers';
+import { format, isToday } from 'date-fns';
 import {
   HiOutlineChatBubbleBottomCenterText,
   HiOutlineCheckCircle,
   HiOutlineCurrencyDollar,
   HiOutlineHomeModern,
 } from 'react-icons/hi2';
+
 import DataItem from '../../ui/DataItem';
 import { Flag } from '../../ui/Flag';
 
-// const StyledBookingDataBox = styled.section`
-//   ${box} /* padding: 3.2rem 4rem; */
-//   overflow: hidden;
-// `;
+import { formatDistanceFromNow, formatCurrency } from '../../utils/helpers';
+
+const StyledBookingDataBox = styled.section`
+  /* Box */
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
+
+  overflow: hidden;
+`;
 
 const Header = styled.header`
   background-color: var(--color-brand-500);
-  /* padding: 2.4rem 4rem; */
   padding: 2rem 4rem;
   color: #e0e7ff;
   font-size: 1.8rem;
@@ -58,7 +59,6 @@ const Guest = styled.div`
   display: flex;
   align-items: center;
   gap: 1.2rem;
-  /* font-size: 1.8rem; */
   margin-bottom: 1.6rem;
   color: var(--color-grey-500);
 
@@ -119,7 +119,7 @@ function BookingDataBox({ booking }) {
   } = booking;
 
   return (
-    <div>
+    <StyledBookingDataBox>
       <Header>
         <div>
           <HiOutlineHomeModern />
@@ -129,11 +129,11 @@ function BookingDataBox({ booking }) {
         </div>
 
         <p>
-          {/* {format(new Date(startDate), 'EEE, MMM dd yyyy')} (
+          {format(new Date(startDate), 'EEE, MMM dd yyyy')} (
           {isToday(new Date(startDate))
             ? 'Today'
             : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), 'EEE, MMM dd yyyy')} */}
+          ) &mdash; {format(new Date(endDate), 'EEE, MMM dd yyyy')}
         </p>
       </Header>
 
@@ -179,7 +179,7 @@ function BookingDataBox({ booking }) {
       <Footer>
         {/* <p>Booked {format(new Date(created_at), 'EEE, MMM dd yyyy, p')}</p> */}
       </Footer>
-    </div>
+    </StyledBookingDataBox>
   );
 }
 
