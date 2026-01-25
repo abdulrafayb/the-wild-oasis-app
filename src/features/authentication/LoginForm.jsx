@@ -8,8 +8,8 @@ import { useState } from 'react';
 import { useLogin } from './useLogin';
 
 function LoginForm() {
-  const [email, setEmail] = useState('aadil@example.com');
-  const [password, setPassword] = useState('pass1234');
+  const [email, setEmail] = useState('rafay@wild.oasis.com');
+  const [password, setPassword] = useState('pass123');
   const { login, isLoading } = useLogin();
 
   function handleSubmit(e) {
@@ -23,7 +23,7 @@ function LoginForm() {
           setEmail('');
           setPassword('');
         },
-      }
+      },
     );
   }
 
